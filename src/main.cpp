@@ -1,15 +1,16 @@
 #include <stdio.h>
 #include "PPM.hpp"
+#include "Vec3.hpp"
 
 int main() {
 	PPMImage img (640, 480);
 
 	for (size_t j = 0; j < img.height(); ++j) {
 		for (size_t i = 0; i < img.width(); ++i) {
-			PPMImage::RGB col = { .r = 255, .g = 127, .b = 0 };
+			auto col = PPMImage::rgb_from_vector(Vec3::lerp(Vec3(0.1, 0.2, 0.8), Vec3(1, 0, 0), (double)j / img.height()));
 			img.set_pixel(i, j, col);
 		}
 	}
 
-	img.save("test.ppm");
+	img.save("render.ppm");
 }
