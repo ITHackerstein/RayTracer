@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include "Vec3.hpp"
 
 class PPMImage {
 	public:
@@ -24,6 +25,8 @@ class PPMImage {
 		int get_pixel(size_t x, size_t y, RGB&) const;
 
 		int save(const char* fileName) const;
+
+		static RGB rgb_from_vector(Vec3 v);
 
 	private:
 		inline size_t pb_idx(size_t x, size_t y) const { return y * m_width + x; }

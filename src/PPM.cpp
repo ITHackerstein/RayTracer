@@ -26,12 +26,18 @@ int PPMImage::save(const char* fileName) const {
 
 	for (size_t j = 0; j < height(); ++j) {
 		for (size_t i = 0; i < width(); ++i) {
-			fputc(m_pixelBuffer[pb_idx(i, j)].r, fp);
-			fputc(m_pixelBuffer[pb_idx(i, j)].g, fp);
-			fputc(m_pixelBuffer[pb_idx(i, j)].b, fp);
+			size_t idx = pb_idx(i, j);
+			fputc(m_pixelBuffer[idx].r, fp);
+			fputc(m_pixelBuffer[idx].g, fp);
+			fputc(m_pixelBuffer[idx].b, fp);
 		}
 	}
 
 	fclose(fp);
 	return 0;
+}
+
+PPMImage::RGB PPMImage::rgb_from_vector(Vec3 v) {
+	v *= 255.0;
+	return { .r = (uint8_t) v.x, .g = (uint8_t) v.y, .b = (uint8_t) v.z };
 }
