@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include "Vec3.hpp"
+#include "Math/Vec3.hpp"
 
 class PPMImage {
 	public:
