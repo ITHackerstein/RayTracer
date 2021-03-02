@@ -17,3 +17,4 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 add_custom_target(run "./${PROJECT_NAME}" DEPENDS ${PROJECT_NAME} USES_TERMINAL)
+add_custom_target(render "eog" "render.ppm" DEPENDS run USES_TERMINAL)
