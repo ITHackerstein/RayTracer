@@ -13,6 +13,6 @@ class Ray {
 
 		Vec3 at(double t) const { return origin() + t * direction(); }
 	private:
-		Vec3 origin;
-		Vec3 direction;
+		Vec3 m_origin;
+		Vec3 m_direction;
 };
