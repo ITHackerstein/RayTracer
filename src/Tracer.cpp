@@ -10,10 +10,10 @@ Tracer::Tracer(size_t imageWidth, size_t imageHeight):
 	double viewportWidth = viewportHeight * m_aspectRatio;
 	double focalLength = 3.0;
 
-	m_iamgePlane[0] = Vec3(-viewportWidth / 2, -viewportHeight / 2, -focalLength); // Bottom-Left Corner
-	m_iamgePlane[1] = Vec3( viewportWidth / 2, -viewportHeight / 2, -focalLength); // Bottom-Right Corner
-	m_iamgePlane[2] = Vec3(-viewportWidth / 2,  viewportHeight / 2, -focalLength); // Top-Left Corner
-	m_iamgePlane[3] = Vec3( viewportWidth / 2,  viewportHeight / 2, -focalLength); // Top-Right Corner
+	m_imagePlane[0] = Vec3(-viewportWidth / 2, -viewportHeight / 2, -focalLength); // Bottom-Left Corner
+	m_imagePlane[1] = Vec3( viewportWidth / 2, -viewportHeight / 2, -focalLength); // Bottom-Right Corner
+	m_imagePlane[2] = Vec3(-viewportWidth / 2,  viewportHeight / 2, -focalLength); // Top-Left Corner
+	m_imagePlane[3] = Vec3( viewportWidth / 2,  viewportHeight / 2, -focalLength); // Top-Right Corner
 }
 
 void Tracer::render() {
@@ -29,13 +29,11 @@ void Tracer::render() {
 }
 
 Ray Tracer::get_ray(size_t x, size_t y) {
-	if (x >= m_renderImage.width() && y >= m_renderImage.height()) return Vec3(-1, -1, -1);
-
 	double u = (double) x / m_renderImage.width();
 	double v = (double) (m_renderImage.height() - y - 1) / m_renderImage.height();
 
-	Vec3 b = Vec3::lerp(m_imagePlane[0], m_iamgePlane[1], u);
-	Vec3 t = Vec3::lerp(m_imagePlane[2], m_iamgePlane[3], u);
+	Vec3 b = Vec3::lerp(m_imagePlane[0], m_imagePlane[1], u);
+	Vec3 t = Vec3::lerp(m_imagePlane[2], m_imagePlane[3], u);
 	Vec3 p = Vec3::lerp(b, t, v);
 
 	// FIXME: The value of the "eye" position shouldn't be hardcoded
@@ -43,7 +41,11 @@ Ray Tracer::get_ray(size_t x, size_t y) {
 }
 
 Vec3 Tracer::trace_pixel(size_t x, size_t y) {
-	if (x >= m_renderImage.width() && y >= m_renderImage.height()) return Vec3(-1, -1, -1);
+	Sphere s (Vec3(0, 0, -3), 0.5);
 
 	Ray ray = get_ray(x, y);
+	if (s.intersects_ray(ray))
+		return Vec3(1, 0, 0);
+
+	return Vec3(0.56, 0.81, 1);
 }

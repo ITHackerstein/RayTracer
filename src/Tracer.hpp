@@ -1,6 +1,9 @@
 #pragma once
 
 #include <stddef.h>
+#include <stdio.h>
+#include "Math/Vec3.hpp"
+#include "Primitives/Sphere.hpp"
 #include "PPM.hpp"
 
 class Tracer {
