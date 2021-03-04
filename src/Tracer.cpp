@@ -1,8 +1,9 @@
 #include "Tracer.hpp"
 
-Tracer::Tracer(size_t imageWidth, size_t imageHeight, HittableList& world):
+Tracer::Tracer(size_t imageWidth, size_t imageHeight, Vec3 cameraOrigin, HittableList& world):
 	m_renderImage(imageWidth, imageHeight),
 	m_aspectRatio((double) imageWidth / imageHeight),
+	m_cameraOrigin(cameraOrigin),
 	m_world(std::move(world))
 {
 	// FIXME: Right now we assume that the aspect ratio is greater or equal to 1 meaning that the image width is greater than the image height.
@@ -37,8 +38,7 @@ Ray Tracer::get_ray(size_t x, size_t y) {
 	Vec3 t = Vec3::lerp(m_imagePlane[2], m_imagePlane[3], u);
 	Vec3 p = Vec3::lerp(b, t, v);
 
-	// FIXME: The value of the "eye" position shouldn't be hardcoded
-	return Ray(Vec3(0, 0, 0), p - Vec3(0, 0, 0));
+	return Ray(m_cameraOrigin, p - m_cameraOrigin);
 }
 
 Vec3 Tracer::trace_pixel(size_t x, size_t y) {

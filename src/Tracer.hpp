@@ -9,7 +9,7 @@
 
 class Tracer {
 	public:
-		Tracer(size_t imageWidth, size_t imageHeight, HittableList& world);
+		Tracer(size_t imageWidth, size_t imageHeight, Vec3 cameraOrigin, HittableList& world);
 
 		void render();
 	private:
@@ -19,5 +19,6 @@ class Tracer {
 		PPMImage m_renderImage;
 		double m_aspectRatio;
 		Vec3 m_imagePlane[4];
+		Vec3 m_cameraOrigin;
 		HittableList m_world;
 };
