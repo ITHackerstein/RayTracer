@@ -4,12 +4,12 @@
 #include <stdio.h>
 #include "Math/MathDefs.hpp"
 #include "Math/Vec3.hpp"
-#include "Primitives/Sphere.hpp"
+#include "Primitives/HittableList.hpp"
 #include "PPM.hpp"
 
 class Tracer {
 	public:
-		Tracer(size_t imageWidth, size_t imageHeight);
+		Tracer(size_t imageWidth, size_t imageHeight, HittableList& world);
 
 		void render();
 	private:
@@ -19,4 +19,5 @@ class Tracer {
 		PPMImage m_renderImage;
 		double m_aspectRatio;
 		Vec3 m_imagePlane[4];
+		HittableList m_world;
 };
