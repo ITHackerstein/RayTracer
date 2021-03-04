@@ -2,9 +2,9 @@
 
 bool Sphere::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord& record) const {
 	Vec3 originCenter = ray.origin() - m_center;
-	double a = Vec3::dot(ray.direction(), ray.direction());
+	double a = ray.direction().mag_sq();
 	double halfB = Vec3::dot(originCenter, ray.direction());
-	double c = Vec3::dot(originCenter, originCenter) - m_radius * m_radius;
+	double c = originCenter.mag_sq() - m_radius * m_radius;
 	double discriminant = halfB * halfB - a * c;
 
 	if (discriminant < 0)
@@ -20,7 +20,8 @@ bool Sphere::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord&
 
 	record.t = sol;
 	record.hitPoint = ray.at(record.t);
-	record.normal = Vec3::normalize((record.hitPoint - m_center) / m_radius);
+	Vec3 normal = (record.hitPoint - m_center) / m_radius;
+	record.set_face_normal(ray, normal);
 
 	return true;
 }
