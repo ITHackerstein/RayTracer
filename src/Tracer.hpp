@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include "Math/MathDefs.hpp"
 #include "Math/Vec3.hpp"
 #include "Primitives/Sphere.hpp"
 #include "PPM.hpp"

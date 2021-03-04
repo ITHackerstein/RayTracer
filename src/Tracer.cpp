@@ -37,15 +37,17 @@ Ray Tracer::get_ray(size_t x, size_t y) {
 	Vec3 p = Vec3::lerp(b, t, v);
 
 	// FIXME: The value of the "eye" position shouldn't be hardcoded
-	return Ray(p - Vec3(0, 0, 0), p);
+	return Ray(p - Vec3(0, 0, 0), Vec3::normalize(p));
 }
 
 Vec3 Tracer::trace_pixel(size_t x, size_t y) {
 	Sphere s (Vec3(0, 0, -3), 0.5);
 
 	Ray ray = get_ray(x, y);
-	if (s.intersects_ray(ray))
-		return Vec3(1, 0, 0);
+	HitRecord record;
+	if (s.intersects_ray(ray, 0, INF_DOUBLE, record))
+		return 0.5 * (record.normal + Vec3(1, 1, 1));
 
-	return Vec3(0.56, 0.81, 1);
+	double t = 0.5 * (ray.direction().y + 1);
+	return Vec3::lerp(Vec3(0.85, 0.85, 0.85), Vec3(0.56, 0.81, 1), t);
 }
