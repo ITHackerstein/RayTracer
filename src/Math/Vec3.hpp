@@ -25,6 +25,7 @@ class Vec3 {
 
 		double mag_sq() const;
 		double mag() const;
+		bool near_zero() const;
 
 		static Vec3 normalize(const Vec3 &v);
 		static double dot(const Vec3 &a, const Vec3 &b);
@@ -114,6 +115,10 @@ inline double Vec3::mag_sq() const {
 
 inline double Vec3::mag() const {
 	return sqrt(mag_sq());
+}
+
+inline bool Vec3::near_zero() const {
+	return fabs(x) < 1e-8 && fabs(y) < 1e-8 && fabs(z) < 1e-9;
 }
 
 inline Vec3 Vec3::normalize(const Vec3 &v) {
