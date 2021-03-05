@@ -5,19 +5,21 @@
 #include "Math/MathDefs.hpp"
 #include "Math/Vec3.hpp"
 #include "Primitives/HittableList.hpp"
+#include "Utils/Random.hpp"
 #include "PPM.hpp"
 
 class Tracer {
 	public:
-		Tracer(size_t imageWidth, size_t imageHeight, Vec3 cameraOrigin, HittableList& world);
+		Tracer(size_t imageWidth, size_t imageHeight, size_t samplesPerPixel, Vec3 cameraOrigin, HittableList& world);
 
 		void render();
 	private:
-		Vec3 trace_pixel(size_t x, size_t y);
-		Ray get_ray(size_t x, size_t y);
+		Vec3 trace_pixel(double x, double y);
+		Ray get_ray(double x, double y);
 
 		PPMImage m_renderImage;
 		double m_aspectRatio;
+		size_t m_samplesPerPixel;
 		Vec3 m_imagePlane[4];
 		Vec3 m_cameraOrigin;
 		HittableList m_world;

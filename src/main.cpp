@@ -9,6 +9,6 @@ int main() {
 	scene.add(std::make_shared<Sphere>(Vec3(0, -100.5, -4), 100));
 
 	Vec3 camera (0, 0, 0);
-	Tracer t (640, 480, camera, scene);
+	Tracer t (640, 480, 50, camera, scene);
 	t.render();
 }

@@ -1,8 +1,9 @@
 #include "Tracer.hpp"
 
-Tracer::Tracer(size_t imageWidth, size_t imageHeight, Vec3 cameraOrigin, HittableList& world):
+Tracer::Tracer(size_t imageWidth, size_t imageHeight, size_t samplesPerPixel, Vec3 cameraOrigin, HittableList& world):
 	m_renderImage(imageWidth, imageHeight),
 	m_aspectRatio((double) imageWidth / imageHeight),
+	m_samplesPerPixel(samplesPerPixel),
 	m_cameraOrigin(cameraOrigin),
 	m_world(std::move(world))
 {
@@ -21,7 +22,11 @@ Tracer::Tracer(size_t imageWidth, size_t imageHeight, Vec3 cameraOrigin, Hittabl
 void Tracer::render() {
 	for (size_t y = 0; y < m_renderImage.height(); ++y) {
 		for (size_t x = 0; x < m_renderImage.width(); ++x) {
-			Vec3 color = trace_pixel(x, y);
+			Vec3 color;
+			for (size_t s = 0; s < m_samplesPerPixel; ++s) {
+				color += trace_pixel(x + random_double(), y + random_double()) / m_samplesPerPixel;
+			}
+
 			auto rgb = PPMImage::rgb_from_vector(color);
 			m_renderImage.set_pixel(x, y, rgb);
 		}
@@ -30,7 +35,7 @@ void Tracer::render() {
 	m_renderImage.save("render.ppm");
 }
 
-Ray Tracer::get_ray(size_t x, size_t y) {
+Ray Tracer::get_ray(double x, double y) {
 	double u = (double) x / m_renderImage.width();
 	double v = (double) (m_renderImage.height() - y - 1) / m_renderImage.height();
 
@@ -41,7 +46,7 @@ Ray Tracer::get_ray(size_t x, size_t y) {
 	return Ray(m_cameraOrigin, p - m_cameraOrigin);
 }
 
-Vec3 Tracer::trace_pixel(size_t x, size_t y) {
+Vec3 Tracer::trace_pixel(double x, double y) {
 	Ray ray = get_ray(x, y);
 
 	HitRecord record;
