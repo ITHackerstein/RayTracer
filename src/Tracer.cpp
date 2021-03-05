@@ -59,8 +59,12 @@ Vec3 Tracer::trace_ray(const Ray& ray, int depth) {
 
 	HitRecord record;
 	if (m_world.intersects_ray(ray, EPSILON, INF_DOUBLE, record)) {
-		Vec3 target = record.hitPoint + record.normal + Vec3::random_unit_vector();
-		return 0.5 * trace_ray(Ray(record.hitPoint, target - record.hitPoint), depth - 1);
+		Ray scattered;
+		Vec3 attenuation;
+		if (record.materialPtr->scatter(ray, record, attenuation, scattered))
+			return attenuation * trace_ray(scattered, depth - 1);
+
+		return Vec3(0, 0, 0);
 	}
 
 	double t = 0.5 * (ray.direction().y + 1);

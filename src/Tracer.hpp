@@ -7,6 +7,7 @@
 #include "Utils/Random.hpp"
 #include "Utils/Math.hpp"
 #include "PPM.hpp"
+#include "Materials/Material.hpp"
 
 #define MAX_TRACING_DEPTH 50
 
