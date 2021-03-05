@@ -15,7 +15,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 file(GLOB_RECURSE SOURCES src/*.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PRIVATE lib/)
+target_include_directories(${PROJECT_NAME} PRIVATE include/)
 
 add_custom_target(run "./${PROJECT_NAME}" DEPENDS ${PROJECT_NAME} USES_TERMINAL)
 add_custom_target(render "eog" "render.ppm" DEPENDS run USES_TERMINAL)
