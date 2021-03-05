@@ -20,8 +20,11 @@ bool Sphere::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord&
 
 	record.t = sol;
 	record.hitPoint = ray.at(record.t);
+
 	Vec3 normal = (record.hitPoint - m_center) / m_radius;
 	record.set_face_normal(ray, normal);
+
+	record.materialPtr = m_materialPtr;
 
 	return true;
 }
