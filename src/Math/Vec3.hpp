@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include "../Utils/Random.hpp"
 
 class Vec3 {
 	public:
@@ -33,6 +34,9 @@ class Vec3 {
 		static Vec3 rotateY(const Vec3 &v, const Vec3 &o, double ty);
 		static Vec3 rotateZ(const Vec3 &v, const Vec3 &o, double tz);
 		static Vec3 rotate(const Vec3 &v, const Vec3 &o, const Vec3 &t);
+		static Vec3 random();
+		static Vec3 random(double min, double max);
+		static Vec3 random_in_unit_sphere();
 
 	public:
 		double x;
@@ -156,4 +160,22 @@ inline Vec3 Vec3::rotateZ(const Vec3 &v, const Vec3 &o, double tz) {
 
 inline Vec3 Vec3::rotate(const Vec3 &v, const Vec3 &o, const Vec3 &t) {
 	return Vec3::rotateZ(Vec3::rotateY(Vec3::rotateX(v, o, t.x), o, t.y), o, t.z);
+}
+
+inline Vec3 Vec3::random() {
+	return Vec3(random_double(), random_double(), random_double());
+}
+
+inline Vec3 Vec3::random(double min, double max) {
+	return Vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+}
+
+inline Vec3 Vec3::random_in_unit_sphere() {
+	while (true) {
+		Vec3 p = Vec3::random(-1, 1);
+		if (p.mag_sq() >= 1)
+			continue;
+
+		return p;
+	}
 }

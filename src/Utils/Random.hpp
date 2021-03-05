@@ -10,3 +10,7 @@ static std::uniform_real_distribution<double> distr(0.0, 1.0);
 inline double random_double() {
 	return distr(rng);
 }
+
+inline double random_double(double min, double max) {
+	return random_double() * (max - min) + min;
+}
