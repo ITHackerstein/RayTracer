@@ -2,10 +2,14 @@
 
 #include "../Math/Vec3.hpp"
 #include "../Math/Ray.hpp"
+#include <memory>
+
+class Material; // Forward declaration of Material
 
 struct HitRecord {
 	Vec3 hitPoint;
 	Vec3 normal;
+	std::shared_ptr<Material> materialPtr;
 	double t;
 	bool isOut;
 
