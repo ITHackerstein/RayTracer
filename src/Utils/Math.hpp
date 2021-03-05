@@ -8,6 +8,10 @@
 #define INF_DOUBLE (std::numeric_limits<double>::infinity())
 #endif
 
+#ifndef EPSILON
+#define EPSILON 1e-3
+#endif
+
 inline double clamp(double v, double min, double max) {
 	if (v < min) return min;
 	if (v > max) return max;
