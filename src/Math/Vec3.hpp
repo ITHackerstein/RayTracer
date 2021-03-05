@@ -37,6 +37,7 @@ class Vec3 {
 		static Vec3 random();
 		static Vec3 random(double min, double max);
 		static Vec3 random_in_unit_sphere();
+		static Vec3 random_unit_vector();
 
 	public:
 		double x;
@@ -178,4 +179,8 @@ inline Vec3 Vec3::random_in_unit_sphere() {
 
 		return p;
 	}
+}
+
+inline Vec3 Vec3::random_unit_vector() {
+	return Vec3::normalize(Vec3::random_in_unit_sphere());
 }

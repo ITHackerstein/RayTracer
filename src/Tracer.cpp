@@ -59,7 +59,7 @@ Vec3 Tracer::trace_ray(const Ray& ray, int depth) {
 
 	HitRecord record;
 	if (m_world.intersects_ray(ray, EPSILON, INF_DOUBLE, record)) {
-		Vec3 target = record.hitPoint + record.normal + Vec3::random_in_unit_sphere();
+		Vec3 target = record.hitPoint + record.normal + Vec3::random_unit_vector();
 		return 0.5 * trace_ray(Ray(record.hitPoint, target - record.hitPoint), depth - 1);
 	}
 
