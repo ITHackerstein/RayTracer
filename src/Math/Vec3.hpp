@@ -39,6 +39,7 @@ class Vec3 {
 		static Vec3 random(double min, double max);
 		static Vec3 random_in_unit_sphere();
 		static Vec3 random_unit_vector();
+		static Vec3 reflect(const Vec3& v, const Vec3& n);
 
 	public:
 		double x;
@@ -188,4 +189,8 @@ inline Vec3 Vec3::random_in_unit_sphere() {
 
 inline Vec3 Vec3::random_unit_vector() {
 	return Vec3::normalize(Vec3::random_in_unit_sphere());
+}
+
+inline Vec3 Vec3::reflect(const Vec3& v, const Vec3& n) {
+	return v - 2 * Vec3::dot(v, n) * n;
 }
