@@ -28,7 +28,13 @@ void Tracer::render() {
 				color += trace_ray(ray, MAX_TRACING_DEPTH) / m_samplesPerPixel;
 			}
 
-			auto rgb = PPMImage::rgb_from_vector(color);
+			Vec3 corrected = Vec3(
+				clamp(pow(color.x, 1.0 / 2.2), 0, 1),
+				clamp(pow(color.y, 1.0 / 2.2), 0, 1),
+				clamp(pow(color.z, 1.0 / 2.2), 0, 1)
+			);
+
+			auto rgb = PPMImage::rgb_from_vector(corrected);
 			m_renderImage.set_pixel(x, y, rgb);
 		}
 	}

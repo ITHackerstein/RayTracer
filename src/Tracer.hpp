@@ -2,10 +2,10 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include "Math/MathDefs.hpp"
 #include "Math/Vec3.hpp"
 #include "Primitives/HittableList.hpp"
 #include "Utils/Random.hpp"
+#include "Utils/Math.hpp"
 #include "PPM.hpp"
 
 #define MAX_TRACING_DEPTH 50
