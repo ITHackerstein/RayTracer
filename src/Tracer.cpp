@@ -24,7 +24,8 @@ void Tracer::render() {
 		for (size_t x = 0; x < m_renderImage.width(); ++x) {
 			Vec3 color;
 			for (size_t s = 0; s < m_samplesPerPixel; ++s) {
-				color += trace_pixel(x + random_double(), y + random_double()) / m_samplesPerPixel;
+				Ray ray = get_ray(x + random_double(), y + random_double());
+				color += trace_ray(ray, MAX_TRACING_DEPTH) / m_samplesPerPixel;
 			}
 
 			auto rgb = PPMImage::rgb_from_vector(color);
@@ -46,12 +47,15 @@ Ray Tracer::get_ray(double x, double y) {
 	return Ray(m_cameraOrigin, p - m_cameraOrigin);
 }
 
-Vec3 Tracer::trace_pixel(double x, double y) {
-	Ray ray = get_ray(x, y);
+Vec3 Tracer::trace_ray(const Ray& ray, int depth) {
+	if (depth <= 0)
+		return Vec3(0, 0, 0);
 
 	HitRecord record;
-	if (m_world.intersects_ray(ray, 0, INF_DOUBLE, record))
-		return 0.5 * (record.normal + Vec3(1, 1, 1));
+	if (m_world.intersects_ray(ray, 0, INF_DOUBLE, record)) {
+		Vec3 target = record.hitPoint + record.normal + Vec3::random_in_unit_sphere();
+		return 0.5 * trace_ray(Ray(record.hitPoint, target - record.hitPoint), depth - 1);
+	}
 
 	double t = 0.5 * (ray.direction().y + 1);
 	return Vec3::lerp(Vec3(0.85, 0.85, 0.85), Vec3(0.56, 0.81, 1), t);

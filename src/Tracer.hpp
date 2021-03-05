@@ -8,13 +8,15 @@
 #include "Utils/Random.hpp"
 #include "PPM.hpp"
 
+#define MAX_TRACING_DEPTH 50
+
 class Tracer {
 	public:
 		Tracer(size_t imageWidth, size_t imageHeight, size_t samplesPerPixel, Vec3 cameraOrigin, HittableList& world);
 
 		void render();
 	private:
-		Vec3 trace_pixel(double x, double y);
+		Vec3 trace_ray(const Ray& ray, int depth);
 		Ray get_ray(double x, double y);
 
 		PPMImage m_renderImage;
