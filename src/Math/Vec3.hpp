@@ -40,6 +40,7 @@ class Vec3 {
 		static Vec3 random_in_unit_sphere();
 		static Vec3 random_unit_vector();
 		static Vec3 reflect(const Vec3& v, const Vec3& n);
+		static Vec3 refract(const Vec3& v, const Vec3& n, double refractionRatio);
 
 	public:
 		double x;
@@ -193,4 +194,11 @@ inline Vec3 Vec3::random_unit_vector() {
 
 inline Vec3 Vec3::reflect(const Vec3& v, const Vec3& n) {
 	return v - 2 * Vec3::dot(v, n) * n;
+}
+
+inline Vec3 Vec3::refract(const Vec3& v, const Vec3& n, double refractionRatio) {
+	auto cosT = fmin(Vec3::dot(-v, n), 1.0);
+	Vec3 rOutY = refractionRatio * (v + cosT * n);
+	Vec3 rOutX = -sqrt(fabs(1.0 - rOutY.mag_sq())) * n;
+	return rOutX + rOutY;
 }

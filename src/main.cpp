@@ -8,6 +8,7 @@
 
 #include "Materials/LambertianDiffuse.hpp"
 #include "Materials/Metal.hpp"
+#include "Materials/Dielectric.hpp"
 #include "Primitives/HittableList.hpp"
 #include "Primitives/Sphere.hpp"
 #include "Tracer.hpp"
@@ -82,6 +83,12 @@ static std::shared_ptr<Material> parse_material(toml::table& table) {
 		double fuzzyness = get_variable_or_error<double>(table, "fuzzyness");
 
 		return std::make_shared<Metal>(albedo, fuzzyness);
+	}
+
+	if (materialType == "Dielectric") {
+		double refractiveIndex = get_variable_or_error<double>(table, "refractiveIndex");
+
+		return std::make_shared<Dielectric>(refractiveIndex);
 	}
 
 	return nullptr;

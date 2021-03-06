@@ -1,0 +1,14 @@
+scene_title = "Test Scene"
+
+width = 640
+height = 480
+samples = 50
+
+camera = [ 0, 0, 0 ]
+
+objects = [
+	{ type = "Sphere", center = [-0.75, 0, -4], radius = 0.5, material = { type = "Dielectric", refractiveIndex = 1.5 } },
+	{ type = "Sphere", center = [-0.75, 0, -4], radius = -0.4, material = { type = "Dielectric", refractiveIndex = 1.5 } },
+	{ type = "Sphere", center = [0.75, 0, -4], radius = 0.5, material = { type = "LambertianDiffuse", albedo = [0.8, 0.3, 0.2] } },
+	{ type = "Sphere", center = [0, -100.5, -4], radius = 100, material = { type = "LambertianDiffuse", albedo = [0.3, 0.3, 0.3] } }
+]
