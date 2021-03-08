@@ -12,6 +12,7 @@
 #include "Utils/Random.hpp"
 #include "Utils/Math.hpp"
 #include "PPM.hpp"
+#include "Camera.hpp"
 #include "Materials/Material.hpp"
 
 #define MAX_TRACING_DEPTH 50
@@ -22,7 +23,7 @@ class Tracer {
 		static constexpr size_t s_numberOfThreads = 4;
 		#endif
 
-		Tracer(size_t imageWidth, size_t imageHeight, size_t samplesPerPixel, Vec3 cameraOrigin, HittableList& world);
+		Tracer(size_t imageWidth, size_t imageHeight, size_t samplesPerPixel, Camera& camera, HittableList& world);
 
 		#ifdef USE_MULTITHREADING
 		void render() { render_multithreaded(); }
@@ -37,12 +38,10 @@ class Tracer {
 		#endif
 
 		Vec3 trace_ray(const Ray& ray, int depth);
-		Ray get_ray(double x, double y);
 
 		PPMImage m_renderImage;
 		double m_aspectRatio;
 		size_t m_samplesPerPixel;
-		Vec3 m_imagePlane[4];
-		Vec3 m_cameraOrigin;
+		Camera m_camera;
 		HittableList m_world;
 };

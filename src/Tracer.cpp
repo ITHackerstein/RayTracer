@@ -1,24 +1,16 @@
 #include "Tracer.hpp"
 
-// static std::vector<std::thread> g_threads;
+static inline void convert_to_uv(double x, double y, double w, double h, double &u, double &v) {
+	u = x / w;
+	v = (h - y - 1) / h;
+}
 
-Tracer::Tracer(size_t imageWidth, size_t imageHeight, size_t samplesPerPixel, Vec3 cameraOrigin, HittableList& world):
+Tracer::Tracer(size_t imageWidth, size_t imageHeight, size_t samplesPerPixel, Camera& camera, HittableList& world):
 	m_renderImage(imageWidth, imageHeight),
-	m_aspectRatio((double) imageWidth / imageHeight),
 	m_samplesPerPixel(samplesPerPixel),
-	m_cameraOrigin(cameraOrigin),
+	m_camera(std::move(camera)),
 	m_world(std::move(world))
 {
-	// FIXME: Right now we assume that the aspect ratio is greater or equal to 1 meaning that the image width is greater than the image height.
-
-	double viewportHeight = 2.0;
-	double viewportWidth = viewportHeight * m_aspectRatio;
-	double focalLength = 3.0;
-
-	m_imagePlane[0] = Vec3(-viewportWidth / 2, -viewportHeight / 2, -focalLength); // Bottom-Left Corner
-	m_imagePlane[1] = Vec3( viewportWidth / 2, -viewportHeight / 2, -focalLength); // Bottom-Right Corner
-	m_imagePlane[2] = Vec3(-viewportWidth / 2,  viewportHeight / 2, -focalLength); // Top-Left Corner
-	m_imagePlane[3] = Vec3( viewportWidth / 2,  viewportHeight / 2, -focalLength); // Top-Right Corner
 }
 
 void Tracer::render_singlethreaded() {
@@ -30,7 +22,9 @@ void Tracer::render_singlethreaded() {
 		for (size_t x = 0; x < m_renderImage.width(); ++x) {
 			Vec3 color;
 			for (size_t s = 0; s < m_samplesPerPixel; ++s) {
-				Ray ray = get_ray(x + random_double(), y + random_double());
+				double u, v;
+				convert_to_uv(x + random_double(), y + random_double(), m_renderImage.width(), m_renderImage.height(), u, v);
+				Ray ray = m_camera.get_ray(u, v);
 				color += trace_ray(ray, MAX_TRACING_DEPTH) / m_samplesPerPixel;
 			}
 
@@ -64,7 +58,9 @@ void Tracer::render_multithreaded() {
 			for (size_t x = 0; x < m_renderImage.width(); ++x) {
 				Vec3 color;
 				for (size_t s = 0; s < m_samplesPerPixel; ++s) {
-					Ray ray = get_ray(x + random_double(), y + random_double());
+					double u, v;
+					convert_to_uv(x + random_double(), y + random_double(), m_renderImage.width(), m_renderImage.height(), u, v);
+					Ray ray = m_camera.get_ray(u, v);
 					color += trace_ray(ray, MAX_TRACING_DEPTH) / m_samplesPerPixel;
 				}
 
@@ -102,17 +98,6 @@ void Tracer::render_multithreaded() {
 	m_renderImage.save("render.ppm");
 }
 #endif
-
-Ray Tracer::get_ray(double x, double y) {
-	double u = (double) x / m_renderImage.width();
-	double v = (double) (m_renderImage.height() - y - 1) / m_renderImage.height();
-
-	Vec3 b = Vec3::lerp(m_imagePlane[0], m_imagePlane[1], u);
-	Vec3 t = Vec3::lerp(m_imagePlane[2], m_imagePlane[3], u);
-	Vec3 p = Vec3::lerp(b, t, v);
-
-	return Ray(m_cameraOrigin, p - m_cameraOrigin);
-}
 
 Vec3 Tracer::trace_ray(const Ray& ray, int depth) {
 	if (depth <= 0)

@@ -67,6 +67,15 @@ static Vec3 parse_vector_array(toml::array& vectorArray) {
 	return Vec3(*x, *y, *z);
 }
 
+static Camera parse_camera_table(toml::table& table, double aspectRatio) {
+	auto positionArray = get_array_or_error(table, "position");
+	Vec3 position = parse_vector_array(positionArray);
+	auto fov = degrees_to_radians(get_variable_or_error<double>(table, "fov"));
+	auto focalLength = get_variable_or_error<double>(table, "focal_length");
+
+	return Camera(position, fov, aspectRatio, focalLength);
+}
+
 static std::shared_ptr<Material> parse_material(toml::table& table) {
 	auto materialType = get_variable_or_error<std::string_view>(table, "type");
 	if (materialType == "LambertianDiffuse") {
@@ -136,8 +145,8 @@ int main(int argc, char** argv) {
 	auto height = get_variable_or_error<size_t>(table, "height");
 	auto samples = get_variable_or_error<size_t>(table, "samples");
 
-	auto cameraArray = get_array_or_error(table, "camera");
-	Vec3 camera = parse_vector_array(cameraArray);
+	auto cameraTable = get_table_or_error(table, "camera");
+	Camera camera = parse_camera_table(cameraTable, (double) width / height);
 
 	HittableList scene;
 
@@ -163,7 +172,7 @@ int main(int argc, char** argv) {
 	std::cout << "  Width: " << width << "\n";
 	std::cout << "  Height: " << height << "\n";
 	std::cout << "  Samples per pixel: " << samples << "\n";
-	std::cout << "  Camera: [ " << camera.x << ", " << camera.y << ", " << camera.z << " ]\n";
+	std::cout << "  Camera position: " << camera.origin() << "\n";
 	std::cout << "  " << scene.size() << " objects\n";
 
 	Tracer t (width, height, samples, camera, scene);

@@ -4,7 +4,7 @@ width = 640
 height = 480
 samples = 50
 
-camera = [ 0, 0, 0 ]
+camera = { position = [ 0, 0, 0 ], fov = 90, focal_length = 3 }
 
 objects = [
 	{ type = "Sphere", center = [-0.75, 0, -4], radius = 0.5, material = { type = "Metal", albedo = [0.7, 0.7, 0.7], fuzzyness = 0 } },
