@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <iostream>
 #include "../Utils/Random.hpp"
 
 class Vec3 {
@@ -16,6 +17,7 @@ class Vec3 {
 		inline Vec3& operator*=(double t);
 		inline Vec3& operator*=(const Vec3 &v);
 		inline Vec3& operator/=(double t);
+		inline friend std::ostream& operator<<(std::ostream& os, const Vec3& v);
 
 		inline Vec3 operator+(const Vec3 &v) const;
 		inline Vec3 operator-(const Vec3 &v) const;
@@ -85,6 +87,11 @@ inline Vec3& Vec3::operator/=(double t) {
 	y /= t;
 	z /= t;
 	return *this;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const Vec3& v) {
+	os << "[ " << v.x << ", " << v.y <<  ", " << v.z << " ]";
+	return os;
 }
 
 inline Vec3 Vec3::operator+(const Vec3 &v) const {
