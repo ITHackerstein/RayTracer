@@ -1,7 +1,12 @@
 #pragma once
 
 #include <stddef.h>
-#include <stdio.h>
+#include <iostream>
+
+#ifdef USE_MULTITHREADING
+#include <thread>
+#endif
+
 #include "Math/Vec3.hpp"
 #include "Primitives/HittableList.hpp"
 #include "Utils/Random.hpp"
@@ -13,10 +18,24 @@
 
 class Tracer {
 	public:
+		#ifdef USE_MULTITHREADING
+		static constexpr size_t s_numberOfThreads = 4;
+		#endif
+
 		Tracer(size_t imageWidth, size_t imageHeight, size_t samplesPerPixel, Vec3 cameraOrigin, HittableList& world);
 
-		void render();
+		#ifdef USE_MULTITHREADING
+		void render() { render_multithreaded(); }
+		#else
+		void render() { render_singlethreaded(); }
+		#endif
 	private:
+		void render_singlethreaded();
+
+		#ifdef USE_MULTITHREADING
+		void render_multithreaded();
+		#endif
+
 		Vec3 trace_ray(const Ray& ray, int depth);
 		Ray get_ray(double x, double y);
 
