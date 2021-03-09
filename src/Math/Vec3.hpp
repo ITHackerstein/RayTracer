@@ -40,6 +40,7 @@ class Vec3 {
 		static Vec3 random();
 		static Vec3 random(double min, double max);
 		static Vec3 random_in_unit_sphere();
+		static Vec3 random_in_hemisphere(const Vec3& n);
 		static Vec3 random_unit_vector();
 		static Vec3 reflect(const Vec3& v, const Vec3& n);
 		static Vec3 refract(const Vec3& v, const Vec3& n, double refractionRatio);
@@ -193,6 +194,11 @@ inline Vec3 Vec3::random_in_unit_sphere() {
 
 		return p;
 	}
+}
+
+inline Vec3 Vec3::random_in_hemisphere(const Vec3& n) {
+	Vec3 inUnitSphere = Vec3::random_in_unit_sphere();
+	return Vec3::dot(inUnitSphere, n) > 0.0 ? inUnitSphere : -inUnitSphere;
 }
 
 inline Vec3 Vec3::random_unit_vector() {
