@@ -1,0 +1,15 @@
+scene_title = "Close view of three spheres"
+
+width = 640
+height = 480
+samples = 50
+
+camera = { position = [ -2, 2, 1 ], look_at = [ 0, 0, -1 ], fov = 45 }
+
+objects = [
+	{ type = "Sphere", center = [-1, 0, -1], radius = 0.5, material = { type = "Dielectric", refractiveIndex = 1.5 } },
+	{ type = "Sphere", center = [-1, 0, -1], radius = -0.4, material = { type = "Dielectric", refractiveIndex = 1.5 } },
+	{ type = "Sphere", center = [0, 0, -1], radius = 0.5, material = { type = "LambertianDiffuse", albedo = [0.0, 0.1, 0.6] } },
+	{ type = "Sphere", center = [1, 0, -1], radius = 0.5, material = { type = "Metal", albedo = [0.7, 0.7, 0.7], fuzzyness = 0.2 } },
+	{ type = "Sphere", center = [0, -100.5, -1], radius = 100, material = { type = "LambertianDiffuse", albedo = [0.8, 0.3, 0.2] } }
+]
