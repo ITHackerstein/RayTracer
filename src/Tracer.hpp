@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 #include <iostream>
+#include <chrono>
 
 #ifdef USE_MULTITHREADING
 #include <thread>

@@ -5,7 +5,7 @@
 
 class Camera {
 	public:
-		Camera(Vec3 origin, double verticalFOV, double aspectRatio, double focalLength);
+		Camera(Vec3 origin, Vec3 lookAt, double verticalFOV, double aspectRatio);
 
 		const Vec3& origin() const { return m_origin; }
 

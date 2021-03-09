@@ -70,10 +70,13 @@ static Vec3 parse_vector_array(toml::array& vectorArray) {
 static Camera parse_camera_table(toml::table& table, double aspectRatio) {
 	auto positionArray = get_array_or_error(table, "position");
 	Vec3 position = parse_vector_array(positionArray);
-	auto fov = degrees_to_radians(get_variable_or_error<double>(table, "fov"));
-	auto focalLength = get_variable_or_error<double>(table, "focal_length");
 
-	return Camera(position, fov, aspectRatio, focalLength);
+	auto lookAtArray = get_array_or_error(table, "look_at");
+	Vec3 lookAt = parse_vector_array(lookAtArray);
+
+	auto fov = degrees_to_radians(get_variable_or_error<double>(table, "fov"));
+
+	return Camera(position, lookAt, fov, aspectRatio);
 }
 
 static std::shared_ptr<Material> parse_material(toml::table& table) {
