@@ -76,7 +76,13 @@ static Camera parse_camera_table(toml::table& table, double aspectRatio) {
 
 	auto fov = degrees_to_radians(get_variable_or_error<double>(table, "fov"));
 
-	return Camera(position, lookAt, fov, aspectRatio);
+	auto lensAperture = get_variable_or_error<double>(table, "lens_aperture");
+
+	auto focusDist = get_variable_or_error<double>(table, "focus_distance");
+	if (focusDist < 0)
+		focusDist = (position - lookAt).mag();
+
+	return Camera(position, lookAt, fov, aspectRatio, lensAperture, focusDist);
 }
 
 static std::shared_ptr<Material> parse_material(toml::table& table) {
