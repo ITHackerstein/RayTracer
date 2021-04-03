@@ -18,6 +18,3 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 add_compile_definitions(USE_MULTITHREADING)
 target_include_directories(${PROJECT_NAME} PRIVATE include/)
 target_link_libraries(${PROJECT_NAME} -lpthread)
-
-add_custom_target(run "./${PROJECT_NAME}" DEPENDS ${PROJECT_NAME} USES_TERMINAL)
-add_custom_target(render "eog" "render.ppm" DEPENDS run USES_TERMINAL)
