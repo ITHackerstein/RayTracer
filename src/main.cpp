@@ -104,7 +104,7 @@ static std::shared_ptr<Material> parse_material(toml::table& table) {
 	}
 
 	if (materialType == "Dielectric") {
-		double refractiveIndex = get_variable_or_error<double>(table, "refractiveIndex");
+		double refractiveIndex = get_variable_or_error<double>(table, "refractive_index");
 
 		return std::make_shared<Dielectric>(refractiveIndex);
 	}
@@ -173,8 +173,9 @@ int main(int argc, char** argv) {
 			exit(1);
 		}
 
-		scene.add(parse_hittable_object(*object));
+		scene.add(hittableObject);
 	}
+
 
 	std::cout << "[RayTracer] Rendering scene:\n";
 	std::cout << "  Title: " << sceneTitle << "\n";
@@ -184,7 +185,11 @@ int main(int argc, char** argv) {
 	std::cout << "  Camera position: " << camera.origin() << "\n";
 	std::cout << "  " << scene.size() << " objects\n";
 
-	Tracer t (width, height, samples, camera, scene);
+	std::shared_ptr<BVHNode> sceneBVH = std::make_shared<BVHNode>(scene);
+	HittableList final_;
+	final_.add(sceneBVH);
+
+	Tracer t (width, height, samples, camera, final_);
 	t.render();
 
 	return 0;
