@@ -39,5 +39,5 @@ int PPMImage::save(const char* fileName) const {
 
 PPMImage::RGB PPMImage::rgb_from_vector(Vec3 v) {
 	v *= 255.0;
-	return { .r = (uint8_t) v.x, .g = (uint8_t) v.y, .b = (uint8_t) v.z };
+	return { .r = (uint8_t) v.x(), .g = (uint8_t) v.y(), .b = (uint8_t) v.z() };
 }

@@ -22,7 +22,7 @@ Camera::Camera(Vec3 origin, Vec3 lookAt, double verticalFOV, double aspectRatio,
 
 Ray Camera::get_ray(double u, double v) const {
 	Vec3 rd = Vec3::random_in_unit_disk() * m_lensRadius;
-	Vec3 offset = rd.x * m_basis[0] + rd.y * m_basis[1];
+	Vec3 offset = rd.x() * m_basis[0] + rd.y() * m_basis[1];
 
 	Vec3 b = Vec3::lerp(m_imagePlane[0], m_imagePlane[1], u);
 	Vec3 t = Vec3::lerp(m_imagePlane[2], m_imagePlane[3], u);

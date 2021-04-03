@@ -29,9 +29,9 @@ void Tracer::render_singlethreaded() {
 			}
 
 			Vec3 corrected = Vec3(
-				clamp(pow(color.x, 1.0 / 2.2), 0, 1),
-				clamp(pow(color.y, 1.0 / 2.2), 0, 1),
-				clamp(pow(color.z, 1.0 / 2.2), 0, 1)
+				clamp(pow(color.x(), 1.0 / 2.2), 0, 1),
+				clamp(pow(color.y(), 1.0 / 2.2), 0, 1),
+				clamp(pow(color.z(), 1.0 / 2.2), 0, 1)
 			);
 
 			auto rgb = PPMImage::rgb_from_vector(corrected);
@@ -65,9 +65,9 @@ void Tracer::render_multithreaded() {
 				}
 
 				Vec3 corrected = Vec3(
-					clamp(pow(color.x, 1.0 / 2.2), 0, 1),
-					clamp(pow(color.y, 1.0 / 2.2), 0, 1),
-					clamp(pow(color.z, 1.0 / 2.2), 0, 1)
+					clamp(pow(color.x(), 1.0 / 2.2), 0, 1),
+					clamp(pow(color.y(), 1.0 / 2.2), 0, 1),
+					clamp(pow(color.z(), 1.0 / 2.2), 0, 1)
 				);
 
 				auto rgb = PPMImage::rgb_from_vector(corrected);
@@ -113,6 +113,6 @@ Vec3 Tracer::trace_ray(const Ray& ray, int depth) {
 		return Vec3(0, 0, 0);
 	}
 
-	double t = 0.5 * (ray.direction().y + 1);
+	double t = 0.5 * (ray.direction().y() + 1);
 	return Vec3::lerp(Vec3(0.85, 0.85, 0.85), Vec3(0.56, 0.81, 1), t);
 }
