@@ -10,7 +10,10 @@
 #include "Materials/Metal.hpp"
 #include "Materials/Dielectric.hpp"
 #include "Primitives/HittableList.hpp"
+#include "Primitives/BVH.hpp"
 #include "Primitives/Sphere.hpp"
+#include "Textures/CheckerTexture.hpp"
+#include "Textures/SolidColor.hpp"
 #include "Tracer.hpp"
 
 static toml::node* get_key_or_error(toml::table& table, const char* key) {
@@ -85,13 +88,32 @@ static Camera parse_camera_table(toml::table& table, double aspectRatio) {
 	return Camera(position, lookAt, fov, aspectRatio, lensAperture, focusDist);
 }
 
+static std::shared_ptr<Texture> parse_texture(toml::table& textureObject) {
+	auto textureType = get_variable_or_error<std::string_view>(textureObject, "type");
+	if (textureType == "SolidColor") {
+		auto colorArray = get_array_or_error(textureObject, "color");
+		Vec3 color = parse_vector_array(colorArray);
+
+		return std::make_shared<SolidColor>(color);
+	} else if (textureType == "CheckerTexture") {
+		auto t1Object = get_table_or_error(textureObject, "odd");
+		std::shared_ptr<Texture> t1 = parse_texture(t1Object);
+		auto t2Object = get_table_or_error(textureObject, "even");
+		std::shared_ptr<Texture> t2 = parse_texture(t2Object);
+
+		return std::make_shared<CheckerTexture>(t1, t2);
+	}
+
+	return nullptr;
+}
+
 static std::shared_ptr<Material> parse_material(toml::table& table) {
 	auto materialType = get_variable_or_error<std::string_view>(table, "type");
 	if (materialType == "LambertianDiffuse") {
-		auto albedoArray = get_array_or_error(table, "albedo");
-		Vec3 albedo = parse_vector_array(albedoArray);
+		auto textureObject = get_table_or_error(table, "albedo");
+		std::shared_ptr<Texture> texture = parse_texture(textureObject);
 
-		return std::make_shared<LambertianDiffuse>(albedo);
+		return std::make_shared<LambertianDiffuse>(texture);
 	}
 
 	if (materialType == "Metal") {

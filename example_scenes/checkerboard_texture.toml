@@ -1,0 +1,62 @@
+scene_title = "Checkerboard Texture"
+
+width = 640
+height = 480
+samples = 50
+
+[camera]
+	position = [ 3, 3, 2 ]
+	look_at = [ 0, 0, -1 ]
+	fov = 20
+	lens_aperture = 1
+	focus_distance = -1
+
+[[objects]]
+	type = "Sphere"
+	center = [ -1, 0, -1 ]
+	radius = 0.5
+	[objects.material]
+		type = "Dielectric"
+		refractive_index = 1.5
+
+[[objects]]
+	type = "Sphere"
+	center = [ -1, 0, -1 ]
+	radius = -0.4
+	[objects.material]
+		type = "Dielectric"
+		refractive_index = 1.5
+
+[[objects]]
+	type = "Sphere"
+	center = [ 0, 0, -1 ]
+	radius = 0.5
+	[objects.material]
+		type = "LambertianDiffuse"
+		[objects.material.albedo]
+			type = "SolidColor"
+			color = [ 0.0, 0.1, 0.6 ]
+
+[[objects]]
+	type = "Sphere"
+	center = [ 1, 0, -1 ]
+	radius = 0.5
+	[objects.material]
+		type = "Metal"
+		albedo = [ 0.7, 0.7, 0.7 ]
+		fuzzyness = 0.2
+
+[[objects]]
+	type = "Sphere"
+	center = [ 0, -100.5, -1 ]
+	radius = 100
+	[objects.material]
+		type = "LambertianDiffuse"
+		[objects.material.albedo]
+			type = "CheckerTexture"
+			[objects.material.albedo.odd]
+				type = "SolidColor"
+				color = [ 0.8, 0.3, 0.2 ]
+			[objects.material.albedo.even]
+				type = "SolidColor"
+				color = [ 0.0, 0.3, 0.2 ]

@@ -24,6 +24,8 @@ bool Sphere::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord&
 	Vec3 normal = (record.hitPoint - m_center) / m_radius;
 	record.set_face_normal(ray, normal);
 
+	get_uv(normal, record.u, record.v);
+
 	record.materialPtr = m_materialPtr;
 
 	return true;
@@ -48,4 +50,12 @@ bool Sphere::bounding_box(AABB& bbox) const {
 void Sphere::dump(int indent) const {
 	print_indent(indent);
 	printf("Sphere( position: [ %lf %lf %lf ], radius: %lf )\n", m_center.x(), m_center.y(), m_center.z(), m_radius);
+}
+
+void Sphere::get_uv(const Vec3& p, double& u, double& v) {
+	auto theta = acos(-p.y());
+	auto phi = atan2(-p.z(), p.x()) + PI;
+
+	u = phi / (2 * PI);
+	v = theta / PI;
 }

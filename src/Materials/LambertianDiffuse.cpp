@@ -8,6 +8,6 @@ bool LambertianDiffuse::scatter(const Ray& ray, const HitRecord& record, Vec3& a
 		scatterDirection = record.normal;
 
 	scattered = Ray(record.hitPoint, scatterDirection);
-	attenuation = m_albedo;
+	attenuation = m_albedo->value(record.u, record.v, record.hitPoint);
 	return true;
 }

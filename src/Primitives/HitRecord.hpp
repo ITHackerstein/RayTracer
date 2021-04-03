@@ -11,6 +11,8 @@ struct HitRecord {
 	Vec3 normal;
 	std::shared_ptr<Material> materialPtr;
 	double t;
+	double u;
+	double v;
 	bool isOut;
 
 	// This determines whether the normal points outside or inside the object.
