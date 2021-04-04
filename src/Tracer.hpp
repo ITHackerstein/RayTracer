@@ -24,7 +24,14 @@ class Tracer {
 		static constexpr size_t s_numberOfThreads = 4;
 		#endif
 
-		Tracer(size_t imageWidth, size_t imageHeight, size_t samplesPerPixel, Camera& camera, HittableList& world);
+		struct OutputImageOptions {
+			size_t imageWidth;
+			size_t imageHeight;
+			size_t samplesPerPixel;
+			const char* outputFileName;
+		};
+
+		Tracer(const OutputImageOptions& outputOptions, Camera& camera, HittableList& world);
 
 		#ifdef USE_MULTITHREADING
 		void render() { render_multithreaded(); }
@@ -41,6 +48,7 @@ class Tracer {
 		Vec3 trace_ray(const Ray& ray, int depth);
 
 		PPMImage m_renderImage;
+		const char* m_outputFileName;
 		double m_aspectRatio;
 		size_t m_samplesPerPixel;
 		Camera m_camera;

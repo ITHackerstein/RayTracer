@@ -5,9 +5,10 @@ static inline void convert_to_uv(double x, double y, double w, double h, double 
 	v = (h - y - 1) / h;
 }
 
-Tracer::Tracer(size_t imageWidth, size_t imageHeight, size_t samplesPerPixel, Camera& camera, HittableList& world):
-	m_renderImage(imageWidth, imageHeight),
-	m_samplesPerPixel(samplesPerPixel),
+Tracer::Tracer(const Tracer::OutputImageOptions& outputOptions, Camera& camera, HittableList& world):
+	m_renderImage(outputOptions.imageWidth, outputOptions.imageHeight),
+	m_outputFileName(outputOptions.outputFileName),
+	m_samplesPerPixel(outputOptions.samplesPerPixel),
 	m_camera(std::move(camera)),
 	m_world(std::move(world))
 {
@@ -43,8 +44,8 @@ void Tracer::render_singlethreaded() {
 
 	std::cout << "[RayTracer] Finished rendering! Time took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() / 1000.0 << " s\n";
 
-	std::cout << "[RayTracer] Saving to 'render.ppm'\n";
-	m_renderImage.save("render.ppm");
+	std::cout << "[RayTracer] Saving to '" << m_outputFileName << "'\n";
+	m_renderImage.save(m_outputFileName);
 }
 
 #ifdef USE_MULTITHREADING
@@ -94,8 +95,8 @@ void Tracer::render_multithreaded() {
 
 	std::cout << "[RayTracer] All threads died. Finished rendering! Time took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() / 1000.0 << " s\n";
 
-	std::cout << "[RayTracer] Saving to 'render.ppm'\n";
-	m_renderImage.save("render.ppm");
+	std::cout << "[RayTracer] Saving to '" << m_outputFileName << "'\n";
+	m_renderImage.save(m_outputFileName);
 }
 #endif
 
