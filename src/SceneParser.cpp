@@ -215,5 +215,11 @@ std::shared_ptr<Texture> SceneParser::parse_texture(const toml::table& textureOb
 		return std::make_shared<MarbleTexture>(scale);
 	}
 
+	if (textureType == "WoodTexture") {
+		auto scale = get_key_or<double>(textureObject, "scale", 1.0);
+
+		return std::make_shared<WoodTexture>(scale);
+	}
+
 	return nullptr;
 }
