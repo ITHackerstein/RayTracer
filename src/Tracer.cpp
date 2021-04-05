@@ -105,15 +105,15 @@ Vec3 Tracer::trace_ray(const Ray& ray, int depth) {
 		return Vec3(0, 0, 0);
 
 	HitRecord record;
-	if (m_world.intersects_ray(ray, EPSILON, INF_DOUBLE, record)) {
-		Ray scattered;
-		Vec3 attenuation;
-		if (record.materialPtr->scatter(ray, record, attenuation, scattered))
-			return attenuation * trace_ray(scattered, depth - 1);
-
+	if (!m_world.intersects_ray(ray, EPSILON, INF_DOUBLE, record))
 		return Vec3(0, 0, 0);
-	}
 
-	double t = 0.5 * (ray.direction().y() + 1);
-	return Vec3::lerp(Vec3(0.85, 0.85, 0.85), Vec3(0.56, 0.81, 1), t);
+	Ray scattered;
+	Vec3 attenuation;
+	Vec3 emitted = record.materialPtr->emitted(record.u, record.v, record.hitPoint);
+
+	if (!record.materialPtr->scatter(ray, record, attenuation, scattered))
+		return emitted;
+
+	return emitted + attenuation * trace_ray(scattered, depth - 1);
 }

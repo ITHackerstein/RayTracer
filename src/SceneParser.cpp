@@ -181,10 +181,17 @@ std::shared_ptr<Material> SceneParser::parse_material(const toml::table& materia
 		return std::make_shared<Metal>(albedo, fuzzyness);
 	}
 
-	if  (materialType == "Dielectric") {
+	if (materialType == "Dielectric") {
 		auto refractiveIndex = get_key_or_error<double>(materialObject, "refractive_index");
 
 		return std::make_shared<Dielectric>(refractiveIndex);
+	}
+
+	if (materialType == "DiffuseLight") {
+		auto emitTextureObject = get_table_or_error(materialObject, "emit");
+		auto emit = parse_texture(emitTextureObject);
+
+		return std::make_shared<DiffuseLight>(emit);
 	}
 
 	return nullptr;
