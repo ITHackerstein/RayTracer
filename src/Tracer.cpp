@@ -5,11 +5,12 @@ static inline void convert_to_uv(double x, double y, double w, double h, double 
 	v = (h - y - 1) / h;
 }
 
-Tracer::Tracer(const Tracer::OutputImageOptions& outputOptions, Camera& camera, HittableList& world):
+Tracer::Tracer(const Tracer::OutputImageOptions& outputOptions, Camera& camera, Vec3 backgroundColor, HittableList& world):
 	m_renderImage(outputOptions.imageWidth, outputOptions.imageHeight),
 	m_outputFileName(outputOptions.outputFileName),
 	m_samplesPerPixel(outputOptions.samplesPerPixel),
 	m_camera(std::move(camera)),
+	m_backgroundColor(backgroundColor),
 	m_world(std::move(world))
 {
 }
@@ -106,7 +107,7 @@ Vec3 Tracer::trace_ray(const Ray& ray, int depth) {
 
 	HitRecord record;
 	if (!m_world.intersects_ray(ray, EPSILON, INF_DOUBLE, record))
-		return Vec3(0, 0, 0);
+		return m_backgroundColor;
 
 	Ray scattered;
 	Vec3 attenuation;

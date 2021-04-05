@@ -41,6 +41,13 @@ Camera SceneParser::parse_camera() const {
 	return Camera(cameraPosition, lookAt, fov, aspectRatio, lensAperture, focusDistance);
 }
 
+Vec3 SceneParser::parse_background_color() const {
+	auto backgroundColorVectorArray = get_array_or_error(m_sceneObject, "background_color");
+	auto backgroundColorVector = parse_vec3(backgroundColorVectorArray);
+
+	return backgroundColorVector;
+}
+
 HittableList SceneParser::parse_objects() const {
 	auto objectsArray = get_array_or_error(m_sceneObject, "objects");
 

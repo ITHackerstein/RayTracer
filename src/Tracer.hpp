@@ -31,7 +31,7 @@ class Tracer {
 			const char* outputFileName;
 		};
 
-		Tracer(const OutputImageOptions& outputOptions, Camera& camera, HittableList& world);
+		Tracer(const OutputImageOptions& outputOptions, Camera& camera, Vec3 backgroundColor, HittableList& world);
 
 		#ifdef USE_MULTITHREADING
 		void render() { render_multithreaded(); }
@@ -52,5 +52,6 @@ class Tracer {
 		double m_aspectRatio;
 		size_t m_samplesPerPixel;
 		Camera m_camera;
+		Vec3 m_backgroundColor;
 		HittableList m_world;
 };

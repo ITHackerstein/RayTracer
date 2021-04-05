@@ -24,6 +24,7 @@ class SceneParser {
 
 		Tracer::OutputImageOptions parse_output_image_options() const;
 		Camera parse_camera() const;
+		Vec3 parse_background_color() const;
 		HittableList parse_objects() const;
 
 		std::string_view scene_title() const { return m_sceneTitle; }
