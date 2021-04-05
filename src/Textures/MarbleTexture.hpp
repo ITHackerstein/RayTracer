@@ -3,15 +3,15 @@
 #include "Texture.hpp"
 #include "../Utils/Perlin.hpp"
 
-class NoiseTexture : public Texture {
+class MarbleTexture : public Texture {
 	public:
-		NoiseTexture() {}
+		MarbleTexture() {}
 
-		NoiseTexture(double scale):
+		MarbleTexture(double scale):
 			m_scale(scale) {}
 
 		virtual Vec3 value(double u, double v, const Vec3& p) const override {
-			return Vec3(1, 1, 1) * (0.5 * (1 + sin(m_scale * p.z() + 10 * m_perlinGenerator.turb(p))));
+			return Vec3(1, 1, 1) * (0.5 * (1 + sin(m_scale * (p.x() + p.y() + p.z()) + 15 * m_perlinGenerator.turb(p))));
 		}
 
 	private:

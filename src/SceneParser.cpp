@@ -209,10 +209,10 @@ std::shared_ptr<Texture> SceneParser::parse_texture(const toml::table& textureOb
 		return std::make_shared<CheckerTexture>(odd, even);
 	}
 
-	if (textureType == "NoiseTexture") {
+	if (textureType == "MarbleTexture") {
 		auto scale = get_key_or<double>(textureObject, "scale", 1.0);
 
-		return std::make_shared<NoiseTexture>(scale);
+		return std::make_shared<MarbleTexture>(scale);
 	}
 
 	return nullptr;
