@@ -8,6 +8,7 @@
 #include "Materials/LambertianDiffuse.hpp"
 #include "Materials/Metal.hpp"
 #include "Materials/Dielectric.hpp"
+#include "Textures/ImageTexture.hpp"
 #include "Textures/WoodTexture.hpp"
 #include "Textures/MarbleTexture.hpp"
 #include "Textures/CheckerTexture.hpp"
