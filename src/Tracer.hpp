@@ -20,10 +20,6 @@
 
 class Tracer {
 	public:
-		#ifdef USE_MULTITHREADING
-		static constexpr size_t s_numberOfThreads = 4;
-		#endif
-
 		struct OutputImageOptions {
 			size_t imageWidth;
 			size_t imageHeight;
@@ -39,6 +35,10 @@ class Tracer {
 		void render() { render_singlethreaded(); }
 		#endif
 	private:
+		#ifdef USE_MULTITHREADING
+		static size_t s_numberOfThreads;
+		#endif
+
 		void render_singlethreaded();
 
 		#ifdef USE_MULTITHREADING

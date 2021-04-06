@@ -1,5 +1,9 @@
 #include "Tracer.hpp"
 
+#ifdef USE_MULTITHREADING
+size_t Tracer::s_numberOfThreads = std::thread::hardware_concurrency();
+#endif
+
 static inline void convert_to_uv(double x, double y, double w, double h, double &u, double &v) {
 	u = x / w;
 	v = (h - y - 1) / h;
