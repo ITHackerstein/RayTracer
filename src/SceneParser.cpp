@@ -163,6 +163,25 @@ std::shared_ptr<Hittable> SceneParser::parse_hittable_object(const toml::table& 
 		return std::make_shared<Sphere>(center, radius, material);
 	}
 
+	if (objectType == "Rectangle") {
+		auto rectangleType = get_key_or_error<std::string_view>(hittableObject, "rectangle_type");
+		auto positionVectorArray = get_array_or_error(hittableObject, "position");
+		auto position = parse_vec3(positionVectorArray);
+		auto width = get_key_or_error<double>(hittableObject, "width");
+		auto height = get_key_or_error<double>(hittableObject, "height");
+
+		auto materialObject = get_table_or_error(hittableObject, "material");
+		auto material = parse_material(materialObject);
+		if (rectangleType == "XY")
+			return std::make_shared<XYRect>(position, width, height, material);
+
+		if (rectangleType == "XZ")
+			return std::make_shared<XZRect>(position, width, height, material);
+
+		if (rectangleType == "YZ")
+			return std::make_shared<YZRect>(position, width, height, material);
+	}
+
 	return nullptr;
 }
 

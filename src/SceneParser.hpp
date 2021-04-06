@@ -14,6 +14,7 @@
 #include "Textures/MarbleTexture.hpp"
 #include "Textures/CheckerTexture.hpp"
 #include "Primitives/Sphere.hpp"
+#include "Primitives/Rectangles.hpp"
 #include "Primitives/BVH.hpp"
 #include "Tracer.hpp"
 #include "Camera.hpp"
