@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stddef.h>
 #include <assert.h>
+#include <math.h>
 
 class Matrix4x4 {
 	public:
@@ -56,6 +57,7 @@ class Matrix4x4 {
 		static bool is_identity(const Matrix4x4& m);
 		static Matrix4x4 inverse(const Matrix4x4& m);
 		static Matrix4x4 transpose(const Matrix4x4& m);
+		static Matrix4x4 absolute(const Matrix4x4& m);
 		static double determinant(const Matrix4x4& m);
 
 	private:
@@ -344,6 +346,16 @@ inline Matrix4x4 Matrix4x4::transpose(const Matrix4x4& m) {
 		};
 
 	return Matrix4x4(t);
+}
+
+inline Matrix4x4 Matrix4x4::absolute(const Matrix4x4 &m) {
+	// The last coefficients are used to translate objects so their sign should be left intact and the coefficients in the fourth row are just placeholders.
+	return Matrix4x4(
+		fabs(m(0, 0)), fabs(m(0, 1)), fabs(m(0, 2)), m(0, 3),
+		fabs(m(1, 0)), fabs(m(1, 1)), fabs(m(1, 2)), m(1, 3),
+		fabs(m(2, 0)), fabs(m(2, 1)), fabs(m(2, 2)), m(2, 3),
+		m(3, 0), m(3, 1), m(3, 2), m(3, 3)
+	);
 }
 
 inline double Matrix4x4::determinant(const Matrix4x4& m) {
