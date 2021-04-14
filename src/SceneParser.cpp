@@ -147,10 +147,8 @@ Vec3 SceneParser::parse_vec3(const toml::array& vectorArray) {
 
 std::shared_ptr<Hittable> SceneParser::parse_hittable_object(const toml::table& hittableObject) {
 	auto objectType = get_key_or_error<std::string_view>(hittableObject, "type");
+	std::shared_ptr<Hittable> hittablePtr = nullptr;
 	if (objectType == "Sphere") {
-		auto centerArray = get_array_or_error(hittableObject, "center");
-		auto center = parse_vec3(centerArray);
-
 		auto radius = get_key_or_error<double>(hittableObject, "radius");
 
 		auto materialObject = get_table_or_error(hittableObject, "material");
@@ -160,29 +158,36 @@ std::shared_ptr<Hittable> SceneParser::parse_hittable_object(const toml::table& 
 			exit(1);
 		}
 
-		return std::make_shared<Sphere>(center, radius, material);
+		hittablePtr = std::make_shared<Sphere>(radius, material);
 	}
 
 	if (objectType == "Rectangle") {
 		auto rectangleType = get_key_or_error<std::string_view>(hittableObject, "rectangle_type");
-		auto positionVectorArray = get_array_or_error(hittableObject, "position");
-		auto position = parse_vec3(positionVectorArray);
 		auto width = get_key_or_error<double>(hittableObject, "width");
 		auto height = get_key_or_error<double>(hittableObject, "height");
 
 		auto materialObject = get_table_or_error(hittableObject, "material");
 		auto material = parse_material(materialObject);
+		if (!material) {
+			fprintf(stderr, "[TOML] Invalid material!\n");
+			exit(1);
+		}
+
 		if (rectangleType == "XY")
-			return std::make_shared<XYRect>(position, width, height, material);
+			hittablePtr = std::make_shared<XYRect>(width, height, material);
 
 		if (rectangleType == "XZ")
-			return std::make_shared<XZRect>(position, width, height, material);
+			hittablePtr = std::make_shared<XZRect>(width, height, material);
 
 		if (rectangleType == "YZ")
-			return std::make_shared<YZRect>(position, width, height, material);
+			hittablePtr = std::make_shared<YZRect>(width, height, material);
 	}
 
-	return nullptr;
+	if (hittablePtr == nullptr)
+		return nullptr;
+
+	auto transformObject = get_array_or_error(hittableObject, "transform");
+	return parse_instance(hittablePtr, transformObject);
 }
 
 std::shared_ptr<Material> SceneParser::parse_material(const toml::table& materialObject) {
