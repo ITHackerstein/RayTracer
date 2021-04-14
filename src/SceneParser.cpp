@@ -267,3 +267,42 @@ std::shared_ptr<Texture> SceneParser::parse_texture(const toml::table& textureOb
 
 	return nullptr;
 }
+
+std::shared_ptr<Instance> SceneParser::parse_instance(std::shared_ptr<Hittable> hittablePtr, const toml::array& transformObject) {
+	Transform compositeTransform;
+	compositeTransform.type = Transform::Type::Composite;
+
+	for (size_t i = 0; i < transformObject.size(); ++i) {
+		auto* currentTransformObject = transformObject.get(i)->as_table();
+		if (currentTransformObject == nullptr) {
+			fprintf(stderr, "[TOML] Invalid transform!");
+			exit(1);
+		}
+
+		auto transformType = get_key_or_error<std::string_view>(*currentTransformObject, "type");
+		if (transformType == "Translation") {
+			auto offsetVectorArray = get_array_or_error(*currentTransformObject, "offset");
+			auto offset = parse_vec3(offsetVectorArray);
+
+			compositeTransform.matrix *= Transform::new_translation_transform(offset).matrix;
+		} else if (transformType == "Rotation") {
+			auto eulerAnglesVector = get_array_or_error(*currentTransformObject, "angles");
+			auto eulerAngles = parse_vec3(eulerAnglesVector);
+
+			compositeTransform.matrix *= Transform::new_rotationX_transform(degrees_to_radians(eulerAngles.x())).matrix;
+			compositeTransform.matrix *= Transform::new_rotationY_transform(degrees_to_radians(eulerAngles.y())).matrix;
+			compositeTransform.matrix *= Transform::new_rotationZ_transform(degrees_to_radians(eulerAngles.z())).matrix;
+		} else if (transformType == "Scale") {
+			auto scaleVector = get_array_or_error(*currentTransformObject, "factor");
+			auto scale = parse_vec3(scaleVector);
+
+			compositeTransform.matrix *= Transform::new_scale_transform(scale).matrix;
+		} else {
+			fprintf(stderr, "[TOML] Invalid transform type!");
+			exit(1);
+		}
+	}
+	compositeTransform.matrixInv = Matrix4x4::inverse(compositeTransform.matrix);
+
+	return std::make_shared<Instance>(hittablePtr, compositeTransform);
+}

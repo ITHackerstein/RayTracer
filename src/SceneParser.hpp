@@ -16,6 +16,7 @@
 #include "Primitives/Sphere.hpp"
 #include "Primitives/Rectangles.hpp"
 #include "Primitives/BVH.hpp"
+#include "Primitives/Instance.hpp"
 #include "Tracer.hpp"
 #include "Camera.hpp"
 
@@ -44,6 +45,7 @@ class SceneParser {
 		static std::shared_ptr<Hittable> parse_hittable_object(const toml::table& hittableObject);
 		static std::shared_ptr<Material> parse_material(const toml::table& materialObject);
 		static std::shared_ptr<Texture> parse_texture(const toml::table& textureObject);
+		static std::shared_ptr<Instance> parse_instance(std::shared_ptr<Hittable> hittablePtr, const toml::array& transformObject);
 
 		toml::table m_sceneObject;
 		std::string_view m_sceneTitle;
