@@ -45,7 +45,7 @@ class SceneParser {
 		static std::shared_ptr<Hittable> parse_hittable_object(const toml::table& hittableObject);
 		static std::shared_ptr<Material> parse_material(const toml::table& materialObject);
 		static std::shared_ptr<Texture> parse_texture(const toml::table& textureObject);
-		static std::shared_ptr<Instance> parse_instance(std::shared_ptr<Hittable> hittablePtr, const toml::array& transformObject);
+		static std::shared_ptr<Instance> parse_instance(std::shared_ptr<Hittable> hittablePtr, const toml::table& instanceObject);
 
 		toml::table m_sceneObject;
 		std::string_view m_sceneTitle;
