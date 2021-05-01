@@ -15,6 +15,7 @@
 #include "Textures/CheckerTexture.hpp"
 #include "Primitives/Sphere.hpp"
 #include "Primitives/Rectangles.hpp"
+#include "Primitives/Triangle.hpp"
 #include "Primitives/BVH.hpp"
 #include "Primitives/Instance.hpp"
 #include "Tracer.hpp"

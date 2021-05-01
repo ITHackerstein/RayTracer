@@ -196,6 +196,24 @@ std::shared_ptr<Hittable> SceneParser::parse_hittable_object(const toml::table& 
 			hittablePtr = std::make_shared<YZRect>(width, height, material);
 	}
 
+	if (objectType == "Triangle") {
+		auto v0Array = get_array_or_error(hittableObject, "v0");
+		auto v1Array = get_array_or_error(hittableObject, "v1");
+		auto v2Array = get_array_or_error(hittableObject, "v2");
+		auto v0 = parse_vec3(v0Array);
+		auto v1 = parse_vec3(v1Array);
+		auto v2 = parse_vec3(v2Array);
+
+		auto materialObject = get_table_or_error(hittableObject, "material");
+		auto material = parse_material(materialObject);
+		if (!material) {
+			fprintf(stderr, "[TOML] Invalid material!\n");
+			exit(1);
+		}
+
+		hittablePtr = std::make_shared<Triangle>(v0, v1, v2, material);
+	}
+
 	return hittablePtr;
 }
 
