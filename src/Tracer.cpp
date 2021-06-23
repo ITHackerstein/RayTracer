@@ -110,7 +110,7 @@ Vec3 Tracer::trace_ray(const Ray& ray, int depth) {
 		return Vec3(0, 0, 0);
 
 	HitRecord record;
-	if (!m_world.intersects_ray(ray, EPSILON, INF_DOUBLE, record))
+	if (!m_world.intersects_ray(ray, record))
 		return m_backgroundColor;
 
 	Ray scattered;

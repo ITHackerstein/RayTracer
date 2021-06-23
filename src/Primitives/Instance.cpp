@@ -1,8 +1,8 @@
 #include "Instance.hpp"
 
-bool Instance::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord& record) const {
+bool Instance::intersects_ray(const Ray& ray, HitRecord& record) const {
 	Ray transformedRay = Transform::transform_ray(m_transform.matrixInv, ray);
-	if (!m_hittableObj->intersects_ray(transformedRay, tMin, tMax, record))
+	if (!m_hittableObj->intersects_ray(transformedRay, record))
 		return false;
 
 	record.hitPoint = Transform::transform_point(m_transform.matrix, record.hitPoint);

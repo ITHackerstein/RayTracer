@@ -16,7 +16,7 @@ class BVHNode : public Hittable {
 
 		BVHNode(const std::vector<std::shared_ptr<Hittable>>& objects, size_t low, size_t high);
 
-		virtual bool intersects_ray(const Ray&, double tMin, double tMax, HitRecord&) const override;
+		virtual bool intersects_ray(const Ray&, HitRecord&) const override;
 		virtual bool bounding_box(AABB& bbox) const override;
 		virtual void dump(int indent) const override;
 

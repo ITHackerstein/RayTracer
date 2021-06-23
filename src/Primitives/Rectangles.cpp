@@ -1,8 +1,8 @@
 #include "Rectangles.hpp"
 
-bool XYRect::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord& record) const {
+bool XYRect::intersects_ray(const Ray& ray, HitRecord& record) const {
 	double t = -ray.origin().z() / ray.direction().z();
-	if (t < tMin || t > tMax)
+	if (t < EPSILON || t > record.distance)
 		return false;
 
 	double x = ray.origin().x() + t * ray.direction().x();
@@ -20,8 +20,8 @@ bool XYRect::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord&
 	record.set_face_normal(ray, outNormal);
 	record.materialPtr = m_material;
 
-	record.t = t;
-	record.hitPoint = ray.at(record.t);
+	record.distance = t;
+	record.hitPoint = ray.at(record.distance);
 
 	return true;
 }
@@ -36,9 +36,9 @@ void XYRect::dump(int indent) const {
 	printf("XYRect(width=%lf, height=%lf)\n", m_width, m_height);
 }
 
-bool XZRect::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord& record) const {
+bool XZRect::intersects_ray(const Ray& ray, HitRecord& record) const {
 	double t = -ray.origin().y() / ray.direction().y();
-	if (t < tMin || t > tMax)
+	if (t < EPSILON || t > record.distance)
 		return false;
 
 	double x = ray.origin().x() + t * ray.direction().x();
@@ -56,8 +56,8 @@ bool XZRect::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord&
 	record.set_face_normal(ray, outNormal);
 	record.materialPtr = m_material;
 
-	record.t = t;
-	record.hitPoint = ray.at(record.t);
+	record.distance = t;
+	record.hitPoint = ray.at(record.distance);
 
 	return true;
 }
@@ -72,9 +72,9 @@ void XZRect::dump(int indent) const {
 	printf("XZRect(width=%lf, height=%lf)\n", m_width, m_height);
 }
 
-bool YZRect::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord& record) const {
+bool YZRect::intersects_ray(const Ray& ray, HitRecord& record) const {
 	double t = -ray.origin().x() / ray.direction().x();
-	if (t < tMin || t > tMax)
+	if (t < EPSILON || t > record.distance)
 		return false;
 
 	double y = ray.origin().y() + t * ray.direction().y();
@@ -92,8 +92,8 @@ bool YZRect::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord&
 	record.set_face_normal(ray, outNormal);
 	record.materialPtr = m_material;
 
-	record.t = t;
-	record.hitPoint = ray.at(record.t);
+	record.distance = t;
+	record.hitPoint = ray.at(record.distance);
 
 	return true;
 }

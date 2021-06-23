@@ -53,12 +53,12 @@ BVHNode::BVHNode(const std::vector<std::shared_ptr<Hittable>>& objects, size_t l
 	m_bbox = AABB::surrounding_box(leftBBox, rightBBox);
 }
 
-bool BVHNode::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord& record) const {
-	if (!m_bbox.intersects_ray(ray, tMin, tMax))
+bool BVHNode::intersects_ray(const Ray& ray, HitRecord& record) const {
+	if (!m_bbox.intersects_ray(ray, record.distance))
 		return false;
 
-	bool hasHitLeft = m_left->intersects_ray(ray, tMin, tMax, record);
-	bool hasHitRight = m_right->intersects_ray(ray, tMin, hasHitLeft ? record.t : tMax, record);
+	bool hasHitLeft = m_left->intersects_ray(ray, record);
+	bool hasHitRight = m_right->intersects_ray(ray, record);
 
 	return hasHitLeft || hasHitRight;
 }

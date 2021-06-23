@@ -13,7 +13,7 @@ class Sphere : public Hittable {
 		Sphere(double radius, std::shared_ptr<Material> materialPtr):
 			m_radius(radius), m_materialPtr(materialPtr) {}
 
-		virtual bool intersects_ray(const Ray&, double tMin, double tMax, HitRecord&) const override;
+		virtual bool intersects_ray(const Ray&, HitRecord&) const override;
 		virtual bool bounding_box(AABB& bbox) const override;
 		virtual void dump(int indent) const override;
 	private:

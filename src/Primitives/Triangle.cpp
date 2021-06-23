@@ -1,6 +1,6 @@
 #include "Triangle.hpp"
 
-bool Triangle::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecord& record) const {
+bool Triangle::intersects_ray(const Ray& ray, HitRecord& record) const {
 	// Möller-Trumbore ray-triangle intersection
 	Vec3 e1 = m_v0 - m_v1;
 	Vec3 e2 = m_v2 - m_v0;
@@ -16,9 +16,9 @@ bool Triangle::intersects_ray(const Ray& ray, double tMin, double tMax, HitRecor
 
 	if (u >= 0 && v >= 0 && u + v <= 1) {
 		double t = Vec3::dot(n, c) * invDet;
-		if (t > tMin && t < tMax) {
+		if (t > EPSILON && t < record.distance) {
 			record.u = u; record.v = v;
-			record.t = t;
+			record.distance = t;
 
 			if (m_hasNormals) {
 				record.normal = u * m_n0 + v * m_n1 + w * m_n2;

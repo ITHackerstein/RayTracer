@@ -13,7 +13,7 @@ class AABB {
 		Vec3 minimum() const { return m_minimum; }
 		Vec3 maximum() const { return m_maximum; }
 
-		bool intersects_ray(const Ray&, double tMin, double tMax) const;
+		bool intersects_ray(const Ray&, double tMax) const;
 
 		static AABB surrounding_box(const AABB&, const AABB&);
 	private:

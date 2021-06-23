@@ -9,8 +9,8 @@ class Instance : public Hittable {
 		Instance(std::shared_ptr<Hittable> hittableObj, Transform transform):
 			m_hittableObj(hittableObj), m_transform(transform) {}
 
-		virtual bool intersects_ray(const Ray &, double tMin, double tMax, HitRecord &) const override;
-		virtual bool bounding_box(AABB &bbox) const override;
+		virtual bool intersects_ray(const Ray&, HitRecord&) const override;
+		virtual bool bounding_box(AABB& bbox) const override;
 		virtual void dump(int indent) const override;
 
 	private:

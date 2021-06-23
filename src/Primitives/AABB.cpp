@@ -1,14 +1,17 @@
 #include "AABB.hpp"
 
-bool AABB::intersects_ray(const Ray& ray, double tMin, double tMax) const {
+bool AABB::intersects_ray(const Ray& ray, double tMax) const {
+	double tMin = 0;
 	for (size_t axis = 0; axis < 3; ++axis) {
 		double invD = 1.0 / ray.direction()[axis];
 		double t0 = (m_minimum[axis] - ray.origin()[axis]) * invD;
 		double t1 = (m_maximum[axis] - ray.origin()[axis]) * invD;
 		if (invD < 0.0)
 			std::swap(t0, t1);
+
 		tMin = t0 > tMin ? t0 : tMin;
 		tMax = t1 < tMax ? t1 : tMax;
+
 		if (tMax <= tMin)
 			return false;
 	}
