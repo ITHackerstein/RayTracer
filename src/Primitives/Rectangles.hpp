@@ -13,6 +13,7 @@ class XYRect : public Hittable {
 			m_width(width), m_height(height), m_material(material) {}
 
 		virtual bool intersects_ray(const Ray&, HitRecord&) const override;
+		virtual bool center(Vec3& center) const override;
 		virtual bool bounding_box(AABB& bbox) const override;
 		virtual void dump(int indent) const override;
 	private:
@@ -29,6 +30,7 @@ class XZRect : public Hittable {
 			m_width(width), m_height(height), m_material(material) {}
 
 		virtual bool intersects_ray(const Ray&, HitRecord&) const override;
+		virtual bool center(Vec3& center) const override;
 		virtual bool bounding_box(AABB& bbox) const override;
 		virtual void dump(int indent) const override;
 	private:
@@ -45,6 +47,7 @@ class YZRect : public Hittable {
 			m_width(width), m_height(height), m_material(material) {}
 
 		virtual bool intersects_ray(const Ray&, HitRecord&) const override;
+		virtual bool center(Vec3& center) const override;
 		virtual bool bounding_box(AABB& bbox) const override;
 		virtual void dump(int indent) const override;
 	private:

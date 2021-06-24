@@ -30,6 +30,11 @@ bool Sphere::intersects_ray(const Ray& ray, HitRecord& record) const {
 	return true;
 }
 
+bool Sphere::center(Vec3& center) const {
+	center = Vec3(0, 0, 0);
+	return true;
+}
+
 bool Sphere::bounding_box(AABB& bbox) const {
 	if (m_radius >= 0) {
 		bbox = AABB(

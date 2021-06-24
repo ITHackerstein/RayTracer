@@ -14,6 +14,7 @@ class Sphere : public Hittable {
 			m_radius(radius), m_materialPtr(materialPtr) {}
 
 		virtual bool intersects_ray(const Ray&, HitRecord&) const override;
+		virtual bool center(Vec3& center) const override;
 		virtual bool bounding_box(AABB& bbox) const override;
 		virtual void dump(int indent) const override;
 	private:

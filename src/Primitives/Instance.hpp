@@ -10,6 +10,7 @@ class Instance : public Hittable {
 			m_hittableObj(hittableObj), m_transform(transform) {}
 
 		virtual bool intersects_ray(const Ray&, HitRecord&) const override;
+		virtual bool center(Vec3& center) const override;
 		virtual bool bounding_box(AABB& bbox) const override;
 		virtual void dump(int indent) const override;
 

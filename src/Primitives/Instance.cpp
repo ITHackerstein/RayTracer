@@ -11,6 +11,15 @@ bool Instance::intersects_ray(const Ray& ray, HitRecord& record) const {
 	return true;
 }
 
+bool Instance::center(Vec3& center) const {
+	AABB bbox;
+	if (!bounding_box(bbox))
+		return false;
+
+	center = (bbox.minimum() + bbox.maximum()) / 2;
+	return true;
+}
+
 bool Instance::bounding_box(AABB &bbox) const {
 	if (!m_hittableObj->bounding_box(bbox))
 		return false;

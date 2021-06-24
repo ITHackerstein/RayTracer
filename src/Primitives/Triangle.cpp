@@ -37,6 +37,11 @@ bool Triangle::intersects_ray(const Ray& ray, HitRecord& record) const {
 	return false;
 }
 
+bool Triangle::center(Vec3& center) const {
+	center = (m_v0 + m_v1 + m_v2) / 3;
+	return true;
+}
+
 bool Triangle::bounding_box(AABB &bbox) const {
 	double minX = std::min(std::min(m_v0.x(), m_v1.x()), m_v2.x());
 	double minY = std::min(std::min(m_v0.y(), m_v1.y()), m_v2.y());

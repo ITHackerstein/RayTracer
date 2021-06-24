@@ -17,6 +17,7 @@ class Triangle : public Hittable {
 			m_v0(v0), m_v1(v1), m_v2(v2), m_hasNormals(true), m_n0(n0), m_n1(n1), m_n2(n2), m_materialPtr(materialPtr) {}
 
 		virtual bool intersects_ray(const Ray&, HitRecord&) const override;
+		virtual bool center(Vec3& center) const override;
 		virtual bool bounding_box(AABB& bbox) const override;
 		virtual void dump(int indent) const override;
 

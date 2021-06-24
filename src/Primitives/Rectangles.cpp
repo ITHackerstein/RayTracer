@@ -26,6 +26,11 @@ bool XYRect::intersects_ray(const Ray& ray, HitRecord& record) const {
 	return true;
 }
 
+bool XYRect::center(Vec3 &center) const {
+	center = Vec3(0, 0, 0);
+	return true;
+}
+
 bool XYRect::bounding_box(AABB& bbox) const {
 	bbox = AABB(Vec3(-m_width / 2, -m_height / 2, -EPSILON), Vec3(m_width / 2, m_height / 2, EPSILON));
 	return true;
@@ -62,6 +67,11 @@ bool XZRect::intersects_ray(const Ray& ray, HitRecord& record) const {
 	return true;
 }
 
+bool XZRect::center(Vec3 &center) const {
+	center = Vec3(0, 0, 0);
+	return true;
+}
+
 bool XZRect::bounding_box(AABB& bbox) const {
 	bbox = AABB(Vec3(-m_width / 2, -EPSILON, -m_height / 2), Vec3(m_width / 2, EPSILON, m_height / 2));
 	return true;
@@ -95,6 +105,11 @@ bool YZRect::intersects_ray(const Ray& ray, HitRecord& record) const {
 	record.distance = t;
 	record.hitPoint = ray.at(record.distance);
 
+	return true;
+}
+
+bool YZRect::center(Vec3 &center) const {
+	center = Vec3(0, 0, 0);
 	return true;
 }
 
