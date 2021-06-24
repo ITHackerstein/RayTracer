@@ -10,6 +10,7 @@
 
 #include "Math/Vec3.hpp"
 #include "Primitives/HittableList.hpp"
+#include "Primitives/BVH.hpp"
 #include "Utils/Random.hpp"
 #include "Utils/Math.hpp"
 #include "PPM.hpp"
@@ -54,4 +55,5 @@ class Tracer {
 		Camera m_camera;
 		Vec3 m_backgroundColor;
 		HittableList m_world;
+		BVH m_worldBVH;
 };

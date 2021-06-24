@@ -15,7 +15,8 @@ Tracer::Tracer(const Tracer::OutputImageOptions& outputOptions, Camera& camera, 
 	m_samplesPerPixel(outputOptions.samplesPerPixel),
 	m_camera(std::move(camera)),
 	m_backgroundColor(backgroundColor),
-	m_world(std::move(world))
+	m_world(std::move(world)),
+	m_worldBVH(m_world.objects())
 {
 }
 
@@ -110,7 +111,7 @@ Vec3 Tracer::trace_ray(const Ray& ray, int depth) {
 		return Vec3(0, 0, 0);
 
 	HitRecord record;
-	if (!m_world.intersects_ray(ray, record))
+	if (!m_worldBVH.intersects_ray(ray, record, m_world.objects()))
 		return m_backgroundColor;
 
 	Ray scattered;
