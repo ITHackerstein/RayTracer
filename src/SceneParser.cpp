@@ -78,14 +78,9 @@ HittableList SceneParser::parse_objects() const {
 
 			objectsList.add(instance);
 		}
-
 	}
 
-	auto bvhTree = std::make_shared<BVHNode>(objectsList);
-	HittableList bvhList;
-	bvhList.add(bvhTree);
-
-	return bvhList;
+	return objectsList;
 }
 
 template<typename T>
