@@ -1,6 +1,11 @@
 #include "AABB.hpp"
 
-bool AABB::intersects_ray(const Ray& ray, double tMax) const {
+double AABB::area() const {
+	Vec3 diagonal = m_maximum - m_minimum;
+	return diagonal.x() * (diagonal.y() + diagonal.z()) + diagonal.y() * diagonal.z();
+}
+
+bool AABB::intersects_ray(const Ray& ray, double tMax, double& t) const {
 	double tMin = 0;
 	for (size_t axis = 0; axis < 3; ++axis) {
 		double invD = 1.0 / ray.direction()[axis];
@@ -15,7 +20,14 @@ bool AABB::intersects_ray(const Ray& ray, double tMax) const {
 		if (tMax <= tMin)
 			return false;
 	}
+
+	t = tMin;
 	return true;
+}
+
+bool AABB::intersects_ray(const Ray& ray, double tMax) const {
+	double t;
+	return AABB::intersects_ray(ray, tMax, t);
 }
 
 AABB AABB::surrounding_box(const AABB& b1, const AABB& b2) {
