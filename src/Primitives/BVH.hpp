@@ -8,6 +8,7 @@ class BVH {
 		BVH(const std::vector<std::shared_ptr<Hittable>>& primitives);
 
 		bool intersects_ray(const Ray&, HitRecord&, const std::vector<std::shared_ptr<Hittable>>& primitives) const;
+		AABB bounding_box() const { return m_nodes[0].bbox; }
 	private:
 		struct Node {
 			AABB bbox;

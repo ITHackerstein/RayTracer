@@ -31,14 +31,6 @@ BVH::BVH(const std::vector<std::shared_ptr<Hittable>>& primitives) {
 			rootBBox = AABB::surrounding_box(rootBBox, bboxes[i]);
 		}
 
-		// std::cout << "Centers: \n";
-		// for (const auto& center: centers)
-		// 	std::cout << "  " << center << '\n';
-
-		// std::cout << "BBoxes: \n";
-		// for (const auto& bbox: bboxes)
-		// 	std::cout << "  min: " << bbox.minimum() << ", max: " << bbox.maximum() << '\n';
-
 		size_t maxNodes = 2 * primitivesCount - 1;
 
 		m_nodeCount = 1;
@@ -48,15 +40,6 @@ BVH::BVH(const std::vector<std::shared_ptr<Hittable>>& primitives) {
 		build_recursive(0, bboxes, centers, 0, primitivesCount);
 
 		m_nodes.resize(m_nodeCount);
-		// std::cout << m_nodeCount << '\n';
-
-		// for (size_t i = 0; i < m_nodeCount; ++i) {
-		// 	std::cout << "Node " << i << '\n';
-		// 	std::cout << "  bbox: [ min: " << m_nodes[i].bbox.minimum() << ", " << "max: " << m_nodes[i].bbox.maximum() << "]\n";
-		// 	std::cout << "  firstChildIndex: " << m_nodes[i].firstChildIndex << '\n';
-		// 	std::cout << "  primitivesCount: " << m_nodes[i].primitivesCount << '\n';
-		// 	std::cout << "  isLeaf: " << m_nodes[i].isLeaf << '\n';
-		// }
 	}
 }
 
@@ -201,9 +184,7 @@ bool BVH::intersects_ray(const Ray& ray, HitRecord& record, const std::vector<st
 	size_t nodeIndex = 0;
 	bool hasHit = false;
 	while (true) {
-		// std::cout << "nodeIndex: " << nodeIndex << '\n';
 		size_t firstChildIndex = m_nodes[nodeIndex].firstChildIndex;
-		// std::cout << "firstChildIndex: " << firstChildIndex << '\n';
 		size_t leftNodeIndex = firstChildIndex;
 		size_t rightNodeIndex = firstChildIndex + 1;
 
@@ -211,13 +192,10 @@ bool BVH::intersects_ray(const Ray& ray, HitRecord& record, const std::vector<st
 		double tRight;
 		bool hasHitLeft = m_nodes[leftNodeIndex].bbox.intersects_ray(ray, maxDist, tLeft);
 		bool hasHitRight = m_nodes[rightNodeIndex].bbox.intersects_ray(ray, maxDist, tRight);
-		// std::cout << "hasHitLeft: " << hasHitLeft << ", hasHitRight: " << hasHitRight << '\n';
 
 		if (hasHitLeft) {
 			if (m_nodes[leftNodeIndex].isLeaf) {
-				// std::cout << "Left node is leaf\n";
 				if (intersects_leaf(ray, record, m_nodes[leftNodeIndex], primitives)) {
-					// std::cout << "Left node hits ray\n";
 					maxDist = record.distance;
 					hasHit = true;
 				}
@@ -228,9 +206,7 @@ bool BVH::intersects_ray(const Ray& ray, HitRecord& record, const std::vector<st
 
 		if (hasHitRight) {
 			if (m_nodes[rightNodeIndex].isLeaf) {
-				// std::cout << "Right node is leaf\n";
 				if (intersects_leaf(ray, record, m_nodes[rightNodeIndex], primitives)) {
-					// std::cout << "Right node hits ray\n";
 					maxDist = record.distance;
 					hasHit = true;
 				}
@@ -259,7 +235,6 @@ bool BVH::intersects_ray(const Ray& ray, HitRecord& record, const std::vector<st
 }
 
 bool BVH::intersects_leaf(const Ray& ray, HitRecord& record, const Node& node, const std::vector<std::shared_ptr<Hittable>>& primitives) const {
-	// std::cout << "intersects_leaf: primitives " << primitives.size() << '\n';
 	bool hasHit = false;
 
 	for (size_t i = 0; i < node.primitivesCount; ++i) {

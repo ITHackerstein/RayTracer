@@ -6,7 +6,7 @@ bool Instance::intersects_ray(const Ray& ray, HitRecord& record) const {
 		return false;
 
 	record.hitPoint = Transform::transform_point(m_transform.matrix, record.hitPoint);
-	record.normal = Transform::transform_vector(Matrix4x4::transpose(m_transform.matrixInv), record.normal);
+	record.normal = Vec3::normalize(Transform::transform_vector(Matrix4x4::transpose(m_transform.matrixInv), record.normal));
 	record.set_face_normal(transformedRay, record.normal);
 	return true;
 }

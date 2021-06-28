@@ -1,5 +1,7 @@
 #include "SceneParser.hpp"
 
+#include "Utils/WavefrontOBJParser.hpp"
+
 SceneParser::SceneParser(char* fileName) {
 	auto res = toml::parse_file(fileName);
 	assert(res.succeeded() && "Error while trying to parse scene file!");
@@ -78,12 +80,7 @@ HittableList SceneParser::parse_objects() const {
 
 			objectsList.add(instance);
 		}
-
 	}
-
-	// auto bvhTree = std::make_shared<BVHNode>(objectsList);
-	// HittableList bvhList;
-	// bvhList.add(bvhTree);
 
 	return objectsList;
 }
@@ -212,6 +209,20 @@ std::shared_ptr<Hittable> SceneParser::parse_hittable_object(const toml::table& 
 		}
 
 		hittablePtr = std::make_shared<Triangle>(v0, v1, v2, material);
+	}
+
+	if (objectType == "Mesh") {
+		auto objFileName = get_key_or_error<std::string>(hittableObject, "obj_file");
+
+		auto materialObject = get_table_or_error(hittableObject, "material");
+		auto material = parse_material(materialObject);
+		if (!material) {
+			fprintf(stderr, "[TOML] Invalid material!\n");
+			exit(1);
+		}
+
+		WavefrontOBJParser parser (objFileName);
+		hittablePtr = parser.parse(material);
 	}
 
 	return hittablePtr;

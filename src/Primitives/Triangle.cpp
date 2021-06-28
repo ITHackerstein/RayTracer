@@ -21,7 +21,7 @@ bool Triangle::intersects_ray(const Ray& ray, HitRecord& record) const {
 			record.distance = t;
 
 			if (m_hasNormals) {
-				record.normal = u * m_n0 + v * m_n1 + w * m_n2;
+				record.normal = u * m_n1 + v * m_n2 + w * m_n0;
 			} else {
 				record.normal = n;
 			}
