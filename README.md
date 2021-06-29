@@ -4,8 +4,15 @@
 This is a simple ray tracer that I built by reading the series of books in https://raytracing.github.io/.
 This is how far I've got:
 - [x] RayTracing In One Weekend (complete)
-- [x] RayTracing The Next Week (missing rectangles and volumes)
+- [x] RayTracing The Next Week (missing volumes)
 - [ ] RayTracing The Rest of Your Life
+I also added some stuff that wasn't discussed in these books:
+- TOML scene loading
+- Triangles
+- SAH BVH tree construction
+- Meshes (OBJ Wavefront Support, no texture indices)
+- General purpose instances (including scales)
+- Matrix4x4 class
 
 ### Why
 I'm building this ray tracer to learn more about computer graphics and possibly some of the physics and math behind it.
