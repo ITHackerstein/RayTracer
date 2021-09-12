@@ -6,6 +6,8 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
+	setvbuf(stdout, NULL, _IONBF, 0);
+
 	SceneParser sceneParser(argv[1]);
 	auto outputImageOptions = sceneParser.parse_output_image_options();
 	auto camera = sceneParser.parse_camera();

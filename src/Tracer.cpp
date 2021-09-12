@@ -1,5 +1,7 @@
 #include "Tracer.hpp"
 
+#include <atomic>
+
 size_t Tracer::s_numberOfThreads = std::thread::hardware_concurrency();
 
 static inline void convert_to_uv(double x, double y, double w, double h, double &u, double &v) {
@@ -23,7 +25,10 @@ void Tracer::render() {
 
 	size_t rowSize = (size_t) ((double) m_renderImage.height() / s_numberOfThreads);
 
-	auto worker = [rowSize, this](size_t rowY) {
+	std::atomic_size_t currentProgress { 0 };
+	std::size_t totalPixels = m_renderImage.width() * m_renderImage.height();
+
+	auto worker = [rowSize, this, &currentProgress](size_t rowY) {
 		for (size_t y = rowY; y < rowY + rowSize && y < m_renderImage.height(); ++y) {
 			for (size_t x = 0; x < m_renderImage.width(); ++x) {
 				Vec3 color;
@@ -42,6 +47,7 @@ void Tracer::render() {
 
 				auto rgb = PPMImage::rgb_from_vector(corrected);
 				m_renderImage.set_pixel(x, y, rgb);
+				++currentProgress;
 			}
 		}
 	};
@@ -54,11 +60,35 @@ void Tracer::render() {
 		threads.emplace_back(worker, y);
 	}
 
+	std::thread logger { [&currentProgress, totalPixels]() {
+		auto logProgress = [totalPixels](size_t current) {
+			float progress = static_cast<float>(current) / totalPixels * 100.0f;
+			printf("[RayTracer] Progress: %03.2f %%", progress);
+		};
+
+		auto currentProgressValue = currentProgress.load();
+
+		while (currentProgressValue < totalPixels) {
+			printf("\r");
+			logProgress(currentProgressValue);
+			using namespace std::chrono_literals;
+			std::this_thread::sleep_for(500ms);
+
+			currentProgressValue = currentProgress.load();
+		}
+
+		printf("\r");
+		logProgress(currentProgressValue);
+		printf("\n");
+	} };
+
 	std::cout << "[RayTracer] Waiting for threads to die\n";
 	for (auto& t: threads) {
 		if (t.joinable())
 			t.join();
 	}
+
+	logger.join();
 
 	auto end = std::chrono::steady_clock::now();
 
