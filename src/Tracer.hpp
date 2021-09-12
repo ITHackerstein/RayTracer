@@ -3,10 +3,7 @@
 #include <stddef.h>
 #include <iostream>
 #include <chrono>
-
-#ifdef USE_MULTITHREADING
 #include <thread>
-#endif
 
 #include "Math/Vec3.hpp"
 #include "Primitives/HittableList.hpp"
@@ -30,21 +27,9 @@ class Tracer {
 
 		Tracer(const OutputImageOptions& outputOptions, Camera& camera, Vec3 backgroundColor, HittableList& world);
 
-		#ifdef USE_MULTITHREADING
-		void render() { render_multithreaded(); }
-		#else
-		void render() { render_singlethreaded(); }
-		#endif
+		void render();
 	private:
-		#ifdef USE_MULTITHREADING
 		static size_t s_numberOfThreads;
-		#endif
-
-		void render_singlethreaded();
-
-		#ifdef USE_MULTITHREADING
-		void render_multithreaded();
-		#endif
 
 		Vec3 trace_ray(const Ray& ray, int depth);
 
